@@ -407,7 +407,7 @@ PlayerSettings:
     m_APIs: 10000000
     m_Automatic: 1
   m_BuildTargetVRSettings: []
-  m_DefaultShaderChunkSizeInMB: 20
+  m_DefaultShaderChunkSizeInMB: 10
   m_DefaultShaderChunkCount: 0
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
@@ -678,7 +678,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   webGLInitialMemorySize: 32
-  webGLMaximumMemorySize: 2048
+  webGLMaximumMemorySize: 1024
   webGLMemoryGrowthMode: 2
   webGLMemoryLinearGrowthStep: 16
   webGLMemoryGeometricGrowthStep: 0.2
