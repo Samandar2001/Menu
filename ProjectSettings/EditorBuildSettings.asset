@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/Fazliddin.unity
-    guid: e3add6024a77eb940872e3111eb41bc0
+    path: Assets/_Scenes/Menu/Home.unity
+    guid: e10b6e1ecdf543249b1409f46025bfdd
+  - enabled: 1
+    path: Assets/_Scenes/Menu/Menu.unity
+    guid: cdcd35b4a84075a4fa6921e92e8078ec
   m_configObjects: {}
