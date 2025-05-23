@@ -28,8 +28,8 @@ public class BookController : MonoBehaviour
         Width = Canvas.GetComponent<RectTransform>().rect.width;
         Height = Canvas.GetComponent<RectTransform>().rect.height;
         m_RectTransform = BookPro.GetComponent<RectTransform>();
-        BookPro.GetComponent<RectTransform>().anchoredPosition = new Vector2(-Width / 2, 50);
-        BookPro.GetComponent<RectTransform>().sizeDelta = new Vector2(Width * 2, Height - 600);
+        BookPro.GetComponent<RectTransform>().anchoredPosition = new Vector2(-Width / 2, 0);
+        BookPro.GetComponent<RectTransform>().sizeDelta = new Vector2(Width * 2, Height - 500);
         HotSpot.GetComponent<RectTransform>().anchoredPosition = new Vector3(Width, 0, 0);
         HotSpot.GetComponent<RectTransform>().right = new Vector2(-Width, 0);
         HotSpot.GetComponent<RectTransform>().localRotation = Quaternion.EulerAngles(0, 0, 0);

@@ -11,12 +11,12 @@ public class UIController : MonoBehaviour
     private float Height;
     private void Awake()
     {
-        Width = Canvas.GetComponent<RectTransform>().rect.width - 100;
-        Height = Canvas.GetComponent<RectTransform>().rect.height;
-        for (int i = 0; i < ceils.Count; i++)
-        {
-            ceils[i].GetComponent<RectTransform>().sizeDelta = new Vector2( Width, ceils[0].GetComponent<RectTransform>().rect.height); ;
-        }
+        //Width = Canvas.GetComponent<RectTransform>().rect.width - 100;
+        //Height = Canvas.GetComponent<RectTransform>().rect.height;
+        //for (int i = 0; i < ceils.Count; i++)
+        //{
+        //    ceils[i].GetComponent<RectTransform>().sizeDelta = new Vector2( Width, ceils[0].GetComponent<RectTransform>().rect.height); ;
+        //}
         
     }
     
