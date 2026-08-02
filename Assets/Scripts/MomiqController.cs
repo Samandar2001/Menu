@@ -91,6 +91,7 @@ public class MomiqController : MonoBehaviour
     readonly Dictionary<string, Sprite> partCache = new Dictionary<string, Sprite>();
     Sprite roundedSp, circleSp, glowSp, triSp, gearSp;
     readonly Dictionary<string, Sprite> gradCache = new Dictionary<string, Sprite>();
+    readonly Dictionary<string, Sprite> uiCache = new Dictionary<string, Sprite>();
 
     // coroutine tutqichlar
     Coroutine resetCo, gameCo;
@@ -226,63 +227,21 @@ public class MomiqController : MonoBehaviour
     // ================= EKRANLAR =================
     void BuildMenu()
     {
-        GradBg("#BFE3F5", "#94BE6A");
-        Sun(-50, -60, 200);
-        Cloud(24, 64, 50);
-        Mountain(-60, 96, 230, 86, "#8FAEB8");
-        Mountain(SW - 150, 104, 210, 74, "#9BB8C0");
-
-        // yuqori panel
-        var coin = Panel("coin", 16, 52, 104, 42, Hex("#FFF3C2"));
-        Circle("coinc", 21, 57, 30, Hex("#E29B18"));
-        Label("coinssa", 21, 64, 30, 14, "SSA", 8, Hex("#8A5C00"), TextAlignmentOptions.Center, true);
-        Label("coinv", 56, 60, 60, 22, coins.ToString(), 16, Hex("#8A6600"), TextAlignmentOptions.Left, true);
-        Clickable(coin.gameObject, () => Show("hamyon"));
-        var rec = Circle("rec", SW - 106, 52, 42, new Color(1, 1, 1, 0.94f));
-        Circle("recm", SW - 106 + 11, 63, 20, Hex("#E9A62B"));
-        Clickable(rec.gameObject, () => Show("yutuqlar"));
-        GearBtn(SW - 58, 52, 42, () => Show("sozlamalar"));
-
-        // sarlavha
-        Panel("chip", SW / 2f - 82, 104, 164, 30, new Color(1, 1, 1, 0.9f));
-        Label("salom", SW / 2f - 82, 111, 164, 16, (bola != "" ? "SALOM, " + bola.ToUpper() : "SALOM, DO'STIM"), 11, Hex("#0B7A28"), TextAlignmentOptions.Center, true);
-        Label("mtitle", 0, 136, SW, 42, "Momiq maskani", 34, Color.white, TextAlignmentOptions.Center, true);
-
-        // xarita binolari
+        ImgBg("menu");
         float mapTop = 172f, mapH = SH - 172f - 152f;
-        string[] bn = { "Momiq uyi", "Sinfxona", "Oshxona", "Yotoqxona", "O'yin maydoni", "Do'kon", "Garderob", "Yuvinish", "UPG xonasi" };
         string[] bek = { "home", "talim", "oshxona", "yotoq", "oyinlar", "dokon", "garderob", "hammom", "upgxona" };
         float[] bx = { 26, 74, 74, 26, 26, 74, 74, 26, 50 };
         float[] by = { 1, 1, 24, 24, 46, 46, 68, 68, 90 };
-        string[] bfon = { "#FFE3B0", "#CFE8FB", "#FFEFC7", "#DDE3F2", "#DFF7DF", "#FFF3CE", "#F6E4F0", "#D6EEF7", "#E4E2F6" };
-        string[] bbel = { "#E4573F", "#2C7FD4", "#FFB800", "#5C6BA8", "#17C41C", "#E29B18", "#B06BA8", "#3B9BF0", "#6B5CC4" };
-        string[] bsoy = { "#B58200", "#1F5FA8", "#B58200", "#3F4C82", "#0B7A28", "#8A6600", "#8A4F84", "#1F5FA8", "#463A9E" };
         for (int i = 0; i < 9; i++)
         {
-            float cx = bx[i] / 100f * SW;
-            float cy = mapTop + by[i] / 100f * mapH;
-            float x = cx - 38;
-            var card = Panel("b" + i, x, cy, 76, 76, Hex(bfon[i]));
-            var roof = Node("r" + i, buildRoot, x, cy, 76, 26);
-            var ri = roof.gameObject.AddComponent<Image>(); ri.sprite = triSp; ri.color = Hex(bbel[i]); ri.raycastTarget = false;
-            Circle("bg" + i, x - 4, cy - 6, 22, Color.white);
-            Label("bnr" + i, x - 4, cy - 1, 22, 14, (i + 1).ToString(), 10, Hex(bsoy[i]), TextAlignmentOptions.Center, true);
-            Panel("bl" + i, cx - 46, cy + 80, 92, 22, new Color(1, 1, 1, 0.94f));
-            Label("blt" + i, cx - 46, cy + 84, 92, 16, bn[i], 11, Hex("#3A3330"), TextAlignmentOptions.Center, true);
+            float cx = bx[i] / 100f * SW, cy = mapTop + by[i] / 100f * mapH;
             string ek = bek[i];
-            Clickable(card.gameObject, () => MenuGo(ek));
+            Zone(cx - 46, cy - 8, 92, 112, () => MenuGo(ek));
         }
-
-        MomiqAt(0.26f * SW, mapTop + 0.01f * mapH + 100f, 0.42f);
-
-        // pastki panel
-        Panel("bb", 16, SH - 72, SW - 32, 60, new Color(1, 0.99f, 0.96f, 0.96f));
-        Circle("lvl", 26, SH - 64, 44, Hex("#EDF7EE"));
-        Label("lvlv", 26, SH - 55, 44, 20, daraja.ToString(), 16, Hex("#0B7A28"), TextAlignmentOptions.Center, true);
-        Label("nm", 82, SH - 66, SW - 210, 16, nom, 13, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Rect2("xpbg", 82, SH - 48, SW - 210, 5, new Color(0.23f, 0.2f, 0.19f, 0.12f));
-        Rect2("xp", 82, SH - 48, (SW - 210) * Mathf.Clamp01(xp / 100f), 5, Hex("#12A83A"));
-        BigBtn("O'ynash", SW - 118, SH - 62, 100, 44, Hex("#12A83A"), Color.white, 16, () => { if (nomSet) Show("home"); else Show("ism"); });
+        Zone(14, 50, 108, 46, () => Show("hamyon"));
+        Zone(SW - 108, 50, 44, 46, () => Show("yutuqlar"));
+        Zone(SW - 60, 50, 44, 46, () => Show("sozlamalar"));
+        Zone(SW - 134, SH - 74, 118, 60, () => { if (nomSet) Show("home"); else Show("ism"); });
     }
 
     void MenuGo(string ek)
@@ -355,91 +314,14 @@ public class MomiqController : MonoBehaviour
 
     void BuildHome()
     {
-        // xona fon (makon bo'yicha)
-        string top, bot, floor; bool dark = false;
-        switch (makon)
-        {
-            case "talim": top = "#FBEFD8"; bot = "#CFAB78"; floor = "#B08355"; break;
-            case "oshxona": top = "#FFF6E4"; bot = "#C09A6C"; floor = "#C09A6C"; break;
-            case "yotoq": top = "#39456F"; bot = "#20294A"; floor = "#4E3C2E"; dark = true; break;
-            case "oyinlar": top = "#8FD8F5"; bot = "#8FBE5C"; floor = "#6B9942"; break;
-            case "dokon": top = "#EAF6EC"; bot = "#AC8558"; floor = "#AC8558"; break;
-            case "garderob": top = "#F3EAFA"; bot = "#AC8558"; floor = "#AC8558"; break;
-            case "hammom": top = "#E6F5FB"; bot = "#96BACD"; floor = "#A9CBDC"; break;
-            case "upgxona": top = "#2A2A46"; bot = "#2E2942"; floor = "#332E4A"; dark = true; break;
-            default: top = "#FFF1DC"; bot = "#C09A6C"; floor = "#C09A6C"; break;
-        }
-        GradBg(top, bot);
-        Rect2("floor", 0, SH - 262, SW, 262, Hex(floor));
-        Rect2("floorline", 0, SH - 262, SW, 14, Hex(dark ? "#57402C" : "#A9743F"));
-        RoomProps(makon);
-
-        // soya + Momiq (bosilsa erkalash)
-        Circle("mshadow", SW / 2f - 118, SH - 214, 236, new Color(0.18f, 0.27f, 0.11f, 0.32f));
-        MomiqAt(SW / 2f, SH - 202, 1f);
-        if (rig != null) Clickable(rig.gameObject, () => { Bump(ref joy, 6); hearts = true; AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
-
-        // yuqori panel
-        var panel = Panel("top", 18, 52, SW - 36, 152, new Color(1, 0.99f, 0.96f, 0.96f));
-        var coin = Panel("coin", 26, 60, 96, 36, Hex("#FFF3C2"));
-        Circle("coinc", 30, 63, 28, Hex("#E29B18"));
-        Label("coinv", 62, 66, 60, 22, coins.ToString(), 15, Hex("#8A6600"), TextAlignmentOptions.Left, true);
-        Clickable(coin.gameObject, () => Show("hamyon"));
-        Label("nm", 132, 60, SW - 220, 16, nom, 15, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Label("yosh", 132, 78, SW - 220, 12, "5-6 YOSH", 9, new Color(0.21f, 0.2f, 0.19f, 0.42f), TextAlignmentOptions.Left, true);
-        Rect2("xpbg", 132, 92, SW - 220, 5, new Color(0.21f, 0.2f, 0.19f, 0.11f));
-        Rect2("xp", 132, 92, (SW - 220) * Mathf.Clamp01(xp / 100f), 5, Hex("#28D62C"));
-        var tunb = Circle("tunb", SW - 62, 60, 36, mood == "uyquda" ? Hex("#2A3358") : Hex("#FFE9A8"));
-        Circle("tuni", SW - 62 + 9, 69, 17, mood == "uyquda" ? Hex("#FBFBFB") : Hex("#FFB800"));
-        Clickable(tunb.gameObject, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
-
-        // holat chipi
-        Panel("chip", 26, 104, SW - 52, 30, new Color(0.07f, 0.66f, 0.23f, 0.1f));
-        Circle("chipd", 34, 111, 10, Hex("#12A83A"));
-        Label("chipn", 50, 108, 150, 20, JoyNomi(makon), 12, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Label("chiph", SW - 210, 108, 176, 20, JoyHolat(makon), 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Right, true);
-
-        // 4 parvarish bari
-        string[] pn = { "QORIN", "KAYFIYAT", "QUVVAT", "TOZALIK" };
-        int[] pv = { hunger, joy, energy, clean };
-        string[] pc = { "#E29B18", "#E4573F", "#12A83A", "#3B9BF0" };
-        for (int i = 0; i < 4; i++)
-        {
-            float bw = (SW - 52 - 18) / 4f;
-            float x = 26 + i * (bw + 6);
-            Panel("pp" + i, x, 142, bw, 52, new Color(0.23f, 0.2f, 0.19f, 0.05f));
-            Circle("pd" + i, x + 7, 150, 9, Hex(pc[i]));
-            Label("pl" + i, x + 20, 150, bw - 22, 10, pn[i], 7, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-            Rect2("pbg" + i, x + 7, 170, bw - 14, 5, new Color(0.23f, 0.2f, 0.19f, 0.12f));
-            Rect2("pb" + i, x + 7, 170, (bw - 14) * Mathf.Clamp01(pv[i] / 100f), 5, Hex(pc[i]));
-        }
-
-        // gap qutisi
-        Panel("bubble", SW / 2f - 132, 250, 264, 62, Color.white);
-        Label("msg", SW / 2f - 122, 258, 244, 46, msg, 15, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-
-        // pastki varaq
-        Panel("sheet", 0, SH - 168, SW, 168, Color.white);
-        float by = SH - 150;
-        if (makon != "home")
-        {
-            BigBtn(JoyTugma(makon), 18, by, SW - 36, 50, makon == "talim" ? Hex("#0B7A28") : Hex("#E29B18"), makon == "talim" ? Color.white : Hex("#3A3330"), 16, () => JoyOchish(makon));
-            by += 59;
-        }
-        else
-        {
-            BigBtn("O'rganamiz", 18, by, SW - 36, 50, Hex("#0B7A28"), Color.white, 16, () => { makon = "talim"; Show("home"); });
-            by += 59;
-        }
-        // Vazifa + Xarita
-        var q = Panel("q", 18, by, 66, 48, new Color(0.16f, 0.84f, 0.17f, 0.1f));
-        Label("qv", 18, by + 8, 66, 16, "0/3", 13, Hex("#0B7A28"), TextAlignmentOptions.Center, true);
-        Label("ql", 18, by + 26, 66, 12, "VAZIFA", 7, new Color(0.23f, 0.2f, 0.19f, 0.45f), TextAlignmentOptions.Center, true);
-        Clickable(q.gameObject, () => Show("yutuqlar"));
-        var mapb = Panel("mapb", 92, by, SW - 110, 48, Hex("#F3F4F0"));
-        Label("mapl", 92, by + 14, SW - 110, 20, "Xarita", 15, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-        Clickable(mapb.gameObject, () => Show("menu"));
-
+        ImgBg("home_" + makon);
+        if (makon != "home") Zone(18, SH - 150, SW - 36, 50, () => JoyOchish(makon));
+        else Zone(18, SH - 150, SW - 36, 50, () => { makon = "talim"; Show("home"); });
+        Zone(18, SH - 91, 66, 48, () => Show("yutuqlar"));
+        Zone(92, SH - 91, SW - 110, 48, () => Show("menu"));
+        Zone(24, 56, 100, 40, () => Show("hamyon"));
+        Zone(SW - 64, 56, 40, 40, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
+        Zone(SW / 2f - 70, 300, 140, 220, () => { Bump(ref joy, 6); AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
         if (mood == "uyquda" && !bath) BuildNightOverlay();
         if (bath) BuildBathOverlay();
     }
@@ -1009,6 +891,27 @@ public class MomiqController : MonoBehaviour
         Sprite sp = tex ? Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f) : null;
         partCache[name] = sp;
         return sp;
+    }
+
+    void ImgBg(string name)
+    {
+        Sprite sp;
+        if (!uiCache.TryGetValue(name, out sp))
+        {
+            var tex = Resources.Load<Texture2D>("MomiqUI/" + name);
+            sp = tex ? Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f) : null;
+            uiCache[name] = sp;
+        }
+        var rt = Node("bg", buildRoot, 0, 0, SW, SH);
+        var img = rt.gameObject.AddComponent<Image>();
+        if (sp) img.sprite = sp; else img.color = Hex("#EFE6D9");
+    }
+    void Zone(float x, float y, float w, float h, Action a)
+    {
+        var rt = Node("z", buildRoot, x, y, w, h);
+        var img = rt.gameObject.AddComponent<Image>(); img.color = new Color(0, 0, 0, 0); img.raycastTarget = true;
+        var b = rt.gameObject.AddComponent<Button>(); b.transition = Selectable.Transition.None;
+        b.onClick.AddListener(() => { Haptic(); a(); });
     }
 
     // ================= SCROLL =================
