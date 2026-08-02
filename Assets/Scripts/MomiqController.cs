@@ -293,24 +293,10 @@ public class MomiqController : MonoBehaviour
 
     void BuildIsm()
     {
-        GradBg("#DDEAEC", "#FBF3E4");
-        Label("k", 0, 96, SW, 18, "TANISHUV", 12, Hex("#C8452F"), TextAlignmentOptions.Center, true);
-        Label("q", 34, 118, SW - 68, 80, "Qo'zichog'imizga qanday ism qo'yamiz?", 26, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        MomiqAt(SW / 2f, 370, 1.06f);
-
-        string[] names = { "Momiq", "Oqquloq", "Bo'ljon", "Jonivor" };
-        for (int i = 0; i < names.Length; i++)
-        {
-            string nm = names[i];
-            float x = 26 + (i % 2) * ((SW - 52) / 2f + 12);
-            float y = 534 + (i / 2) * 74;
-            bool sel = nom == nm;
-            var b = Panel("nm" + i, x, y, (SW - 52 - 12) / 2f, 62, sel ? Hex("#C8452F") : Hex("#FFF8EA"));
-            Label("t" + i, x, y + 20, (SW - 52 - 12) / 2f, 24, nm, 18, sel ? Hex("#FFF6E6") : Hex("#12303B"), TextAlignmentOptions.Center, true);
-            Clickable(b.gameObject, () => { nom = nm; Refresh(); });
-        }
-        BigBtn("Davom etish", 26, 704, SW - 52, 66, Hex("#C8452F"), Hex("#FFF6E6"), 22, () => { nomSet = true; msg = "Mening ismim " + nom + ". Kel, o'ynaymiz!"; Save(); Show("home"); });
+        ImgBg("ism");
+        Zone(26, SH - 110, SW - 52, 80, () => { nomSet = true; Save(); Show("home"); });
     }
+
 
     void BuildHome()
     {
@@ -352,61 +338,23 @@ public class MomiqController : MonoBehaviour
 
     void BuildSettings()
     {
-        BgFlat(Hex("#FBF3E4"));
-        Back(() => Show("home"), Hex("#12303B"));
-        Label("t", 70, 24, 200, 30, "Sozlamalar", 26, Hex("#12303B"), TextAlignmentOptions.Left, true);
-        string[] nm = { "Ovoz effektlari", "Musiqa", "Titrash", "Vaqt cheklovi" };
-        string[] iz = { "Ma'rash, kulgi, qadam tovushi", "Yumshoq o'zbek kuyi", "Tegilganda telefon titraydi", "Kuniga 20 daqiqa" };
-        Func<int, bool> get = i => i == 0 ? sound : i == 1 ? music : i == 2 ? titrash : nazorat;
-        for (int i = 0; i < 4; i++)
-        {
-            float y = 110 + i * 78;
-            var row = Panel("s" + i, 22, y, SW - 44, 66, Hex("#FFFAF0"));
-            Label("sn" + i, 38, y + 12, 220, 20, nm[i], 17, Hex("#12303B"), TextAlignmentOptions.Left, true);
-            Label("si" + i, 38, y + 36, 260, 16, iz[i], 11, new Color(0.07f, 0.19f, 0.23f, 0.5f), TextAlignmentOptions.Left, false);
-            bool on = get(i);
-            var track = Panel("tr" + i, SW - 44 - 52 - 4, y + 18, 52, 30, on ? Hex("#7FA650") : new Color(0.07f, 0.19f, 0.23f, 0.2f));
-            var knob = Circle("kn" + i, (SW - 44 - 52 - 4) + (on ? 25 : 3), y + 21, 24, Color.white);
-            int idx = i;
-            Clickable(row.gameObject, () => { ToggleSetting(idx); Refresh(); });
-        }
-        BigBtn("Bosh menyuga", 22, SH - 90, SW - 44, 52, Hex("#FFF8EA"), Hex("#12303B"), 15, () => Show("menu"));
+        ImgBg("sozlamalar");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(22, SH - 90, SW - 44, 60, () => Show("menu"));
     }
+
 
     void BuildTalim()
     {
-        GradBg("#E4EEE6", "#FFF9EE");
-        Back(() => Show("home"), Hex("#3A3330"));
-        var mb = Circle("map", 68, 22, 40, new Color(1, 0.98f, 0.94f, 0.94f));
-        Label("mapi", 68, 30, 40, 24, "M", 16, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-        Clickable(mb.gameObject, () => Show("menu"));
-        Label("t", 116, 20, SW - 140, 28, "O'rganamiz", 26, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Label("ts", 116, 50, SW - 140, 16, nom + " bilan · " + organgan.Count + " ta o'rganildi", 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Left, false);
-
-        BeginScroll(80);
-        Label("yg", 22, 4, 200, 16, "YOSH GURUHI", 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        Panel("ygc", 22, 24, 90, 44, Hex("#12A83A"));
-        Label("ygt", 22, 32, 90, 18, "5-6 yosh", 14, Color.white, TextAlignmentOptions.Center, true);
-        Label("ygl", 22, 50, 90, 12, "TANLANDI", 8, new Color(1, 1, 1, 0.75f), TextAlignmentOptions.Center, true);
-        Panel("ygi", 122, 24, SW - 144, 44, new Color(0.16f, 0.84f, 0.17f, 0.08f));
-        Label("ygit", 132, 30, SW - 164, 32, "Hozircha 5-6 yosh darslari tayyor. Qolganlari qo'shiladi.", 10, new Color(0.23f, 0.2f, 0.19f, 0.6f), TextAlignmentOptions.Left, false);
-
-        Label("asf", 22, 84, 260, 16, "ASOSIY FANLAR · 4 TA KITOB", 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        Card("m", 106, 150, "Quvnoq matematika", "Mashq daftari · 0 dan 10 gacha", Hex("#3A3330"), Color.white, () => { fan = "matem"; Show("matem"); });
-        Card("e", 266, 150, "Ingliz tili", "So'z va tarjimasi", Hex("#3B9BF0"), Color.white, () => Show("ingliz"));
-        Card("tb", 426, 150, "Tabiiy fan", "Tabiat va atrof-olam", Hex("#28D62C"), Color.white, () => { fan = "tabiiy"; Show("matem"); });
-        Card("sv", 586, 150, "Savodxonlik", "Harf, bo'g'in va so'z", Hex("#FFB800"), Hex("#3A3330"), () => { fan = "savod"; Show("matem"); });
-        var rr = Panel("rr", 22, 746, SW - 44, 60, Color.white);
-        Label("rrt", 42, 758, SW - 90, 20, "Fanlar reytingi", 16, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Label("rrs", 42, 780, SW - 90, 14, "Har fanda kim oldinda", 11, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, false);
-        Clickable(rr.gameObject, () => Show("fanjadval"));
-
-        Label("qm", 22, 822, 260, 16, "QO'SHIMCHA MASHQLAR", 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        Card("hf", 844, 150, "Harflar", "Harfni bosing — Momiq aytadi", Color.white, Hex("#3A3330"), () => Show("harf"));
-        Card("rg", 1004, 150, "Ranglar", "To'g'ri rangni toping", Color.white, Hex("#3A3330"), () => NewColor());
-        Card("mo", 1164, 150, "Mini-o'yinlar", "Xotira, olma tutish", Hex("#F3E8F1"), Hex("#3A3330"), () => Show("oyinlar"));
-        EndScroll(1340);
+        ImgBg("talim");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(60, 42, 50, 52, () => Show("menu"));
+        Zone(22, 150, SW - 44, 155, () => { fan = "matem"; Show("matem"); });
+        Zone(22, 310, SW - 44, 155, () => Show("ingliz"));
+        Zone(22, 470, SW - 44, 155, () => { fan = "tabiiy"; Show("matem"); });
+        Zone(22, 630, SW - 44, 150, () => { fan = "savod"; Show("matem"); });
     }
+
 
     void BuildSanoq()
     {
@@ -506,27 +454,12 @@ public class MomiqController : MonoBehaviour
 
     void BuildHub()
     {
-        GradBg("#DDEAEC", "#FBF3E4");
-        Back(() => Show("home"), Hex("#12303B"));
-        Label("t", 70, 20, 260, 28, "Mini-o'yinlar", 26, Hex("#12303B"), TextAlignmentOptions.Left, true);
-        Label("s", 70, 50, 260, 16, "Tanga yig'ib kiyim sotib olamiz", 12, new Color(0.07f, 0.19f, 0.23f, 0.55f), TextAlignmentOptions.Left, false);
-
-        var g1 = Panel("g1", 22, 120, SW - 44, 172, Hex("#7FA650"));
-        Label("g1t", 42, 240, SW - 88, 26, "Olma tut", 24, Hex("#FFF6E6"), TextAlignmentOptions.Left, true);
-        Label("g1s", 42, 266, SW - 88, 16, "20 soniya · har olma 2 tanga", 12, new Color(1, 0.96f, 0.9f, 0.8f), TextAlignmentOptions.Left, false);
-        Clickable(g1.gameObject, () => Show("oyin"));
-
-        var g2 = Panel("g2", 22, 306, SW - 44, 172, Hex("#12303B"));
-        Label("g2t", 42, 426, SW - 88, 26, "Juftini top", 24, Hex("#FFF6E6"), TextAlignmentOptions.Left, true);
-        Label("g2s", 42, 452, SW - 88, 16, "Xotira o'yini · juft topilsa 5 tanga", 12, new Color(1, 0.96f, 0.9f, 0.7f), TextAlignmentOptions.Left, false);
-        Clickable(g2.gameObject, () => StartMemory());
-
-        BigBtn("Yutuqlar", 22, 494, SW - 44, 56, Hex("#12303B"), Hex("#FFF6E6"), 16, () => Show("yutuqlar"));
-        BigBtn(giftTaken ? "Bugungi sovg'a olindi" : "Kunlik sovg'a: 30 tanga", 22, 562, SW - 44, 56,
-            giftTaken ? new Color(0.07f, 0.19f, 0.23f, 0.08f) : Hex("#E9A62B"),
-            giftTaken ? new Color(0.07f, 0.19f, 0.23f, 0.45f) : Hex("#3B2A1E"), 16,
-            () => { if (!giftTaken) { giftTaken = true; coins += 30; msg = "Sovg'a uchun rahmat!"; Save(); Refresh(); } });
+        ImgBg("oyinlar");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(22, 120, SW - 44, 190, () => Show("oyin"));
+        Zone(22, 320, SW - 44, 190, () => StartMemory());
     }
+
 
     void BuildGame()
     {
@@ -556,102 +489,27 @@ public class MomiqController : MonoBehaviour
 
     void BuildKitchen()
     {
-        GradBg("#FFF6E4", "#FCE8C8");
-        Rect2("floor", 0, 426, SW, SH - 426, Hex("#C7A276"));
-        Rect2("floorline", 0, 412, SW, 14, Hex("#8A5C31"));
-        Back(() => Show("home"), Hex("#3A3330"));
-        MapBtn(() => Show("menu"));
-        Label("t", 116, 20, SW - 140, 28, "Oshxona", 26, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        string ht = hunger > 70 ? "qorni to'q" : (hunger > 35 ? "bir oz och" : "juda och");
-        Label("ts", 116, 50, SW - 140, 16, "Momiqning qorni: " + ht, 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Left, false);
-        MomiqAt(SW / 2f, 400, 0.86f);
-        BeginScroll(406);
-        Label("q", 22, 4, 260, 16, "NIMA BERAMIZ?", 11, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        string[] fn = { "Issiq non", "Yaydab o't", "Iliq sut" };
-        string[] fi = { "Tandirdan yangi", "Tog' yonbag'ridan", "Katta kosada" };
-        string[] fh = { "N", "O'", "S" };
-        Color[] fc = { Hex("#C8452F"), Hex("#28D62C"), Hex("#3B9BF0") };
-        int[] fq = { 18, 12, 22 };
-        for (int i = 0; i < 3; i++)
-        {
-            float y = 30 + i * 76;
-            var row = Panel("f" + i, 0, y, SW - 44, 64, Color.white);
-            var ic = Panel("fic" + i, 14, y + 6, 52, 52, fc[i]);
-            Label("fh" + i, 14, y + 20, 52, 24, fh[i], 20, Color.white, TextAlignmentOptions.Center, true);
-            Label("fn" + i, 78, y + 12, SW - 170, 22, fn[i], 18, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            Label("fi" + i, 78, y + 36, SW - 170, 14, fi[i], 11, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Left, false);
-            Label("fp" + i, SW - 100, y + 20, 56, 20, "+" + fq[i], 14, Hex("#28D62C"), TextAlignmentOptions.Right, true);
-            int q = fq[i]; string nm = fn[i];
-            Clickable(row.gameObject, () => { Bump(ref hunger, q); Bump(ref joy, 4); AddXp(8, "ovqat"); React("ovqat", nm + " juda mazza! Rahmat!", 1.8f); });
-        }
-        EndScroll(260);
+        ImgBg("oshxona");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(60, 42, 50, 52, () => Show("menu"));
+        Zone(22, 400, SW - 44, 220, () => { Bump(ref hunger, 18); Bump(ref joy, 4); AddXp(8, "ovqat"); React("ovqat", "Juda mazza! Rahmat!", 1.6f); });
     }
+
 
     void BuildWardrobe()
     {
-        GradBg("#F3EAFA", "#E7DBF4");
-        Rect2("floor", 0, 446, SW, SH - 446, Hex("#C7A276"));
-        Rect2("floorline", 0, 432, SW, 14, Hex("#8A5C31"));
-        Back(() => Show("home"), Hex("#3A3330"));
-        MapBtn(() => Show("menu"));
-        Label("t", 116, 20, SW - 140, 28, "Kiyintirish", 26, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-        Label("ts", 116, 50, SW - 140, 16, "Bosib kiydiring yoki yechiring", 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Left, false);
-        BeginScroll(140);
-        var prev = Panel("prev", 0, 4, SW - 44, 268, Color.white);
-        MomiqAt(SW / 2f, 268, 1f);
-        string[] ck = { "dopi", "chopon", "sharf", "kozoynak" };
-        string[] cn = { "Do'ppi", "Chopon", "Belbog'", "Ko'zoynak" };
-        Color[] cr = { Hex("#17414F"), Hex("#1E7A8C"), Hex("#C8452F"), Hex("#12303B") };
-        for (int i = 0; i < 4; i++)
-        {
-            float cw = (SW - 44 - 12) / 2f;
-            float x = (i % 2) * (cw + 12);
-            float y = 286 + (i / 2) * 116;
-            bool own = owned.ContainsKey(ck[i]) && owned[ck[i]];
-            bool onw = wear.ContainsKey(ck[i]) && wear[ck[i]];
-            var card = Panel("c" + i, x, y, cw, 104, onw ? Color.white : Hex("#F6F0E2"));
-            Panel("ci" + i, x + 14, y + 12, cw - 28, 52, cr[i]);
-            Label("cn" + i, x + 14, y + 68, cw - 28, 20, cn[i], 17, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            Label("ch" + i, x + 14, y + 86, cw - 28, 14, own ? (onw ? "Kiyilgan" : "Yechilgan") : "Qulflangan", 11, own ? (onw ? Hex("#12A83A") : new Color(0.23f, 0.2f, 0.19f, 0.45f)) : Hex("#C8452F"), TextAlignmentOptions.Left, false);
-            string key = ck[i]; string nm = cn[i];
-            Clickable(card.gameObject, () => {
-                if (!(owned.ContainsKey(key) && owned[key])) { Show("dokon"); return; }
-                wear[key] = !wear[key]; hearts = true; React("kulgan", wear[key] ? "Menga mos keldi!" : "Yengil bo'ldi!", 1.4f); Save();
-            });
-        }
-        BigBtn("Do'konga — yangi kiyimlar", 0, 520, SW - 44, 52, Hex("#3A3330"), Color.white, 16, () => Show("dokon"));
-        EndScroll(590);
+        ImgBg("garderob");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(60, 42, 50, 52, () => Show("menu"));
     }
+
 
     void BuildShop()
     {
-        BgFlat(Hex("#FBF3E4"));
-        Rect2("hdr", 0, 0, SW, 180, Hex("#12303B"));
-        Back(() => Show("home"), Hex("#FFF6E6"));
-        Label("t", 70, 24, 200, 30, "Do'kon", 26, Hex("#FFF6E6"), TextAlignmentOptions.Left, true);
-        Label("c", SW - 130, 30, 108, 24, "" + coins, 16, Hex("#FFF6E6"), TextAlignmentOptions.Right, true);
-        Label("note", 22, 100, SW - 44, 40, "Tanga o'yinlarda va parvarishda yig'iladi. Haqiqiy pul talab qilinmaydi.", 13, new Color(1, 0.96f, 0.9f, 0.85f), TextAlignmentOptions.Left, false);
-
-        string[] key = { "chopon", "sharf", "kozoynak", "gilam" };
-        string[] nm = { "Adras chopon", "Qizil belbog'", "Ko'zoynak", "Yangi gilam" };
-        string[] iz = { "Sovuq kunlar uchun", "Bayramona", "Yozgi kunlar", "Hovlini indigo qiladi" };
-        Color[] cc = { Hex("#1E7A8C"), Hex("#C8452F"), Hex("#12303B"), Hex("#1E7A8C") };
-        int[] narx = { 60, 40, 55, 120 };
-        for (int i = 0; i < 4; i++)
-        {
-            float y = 210 + i * 70;
-            var row = Panel("s" + i, 22, y, SW - 44, 60, Hex("#FFFAF0"));
-            Panel("sc" + i, 36, y + 3, 54, 54, cc[i]);
-            Label("sn" + i, 104, y + 8, SW - 220, 22, nm[i], 18, Hex("#12303B"), TextAlignmentOptions.Left, true);
-            Label("si" + i, 104, y + 32, SW - 220, 14, iz[i], 11, new Color(0.07f, 0.19f, 0.23f, 0.55f), TextAlignmentOptions.Left, false);
-            bool own = owned[key[i]];
-            bool afford = coins >= narx[i];
-            var btn = Panel("sb" + i, SW - 120, y + 9, 96, 42, own ? new Color(0.5f, 0.65f, 0.31f, 0.18f) : (afford ? Hex("#E9A62B") : new Color(0.07f, 0.19f, 0.23f, 0.1f)));
-            Label("sbt" + i, SW - 120, y + 20, 96, 20, own ? "Olingan" : narx[i] + " tanga", 13, own ? Hex("#4C6A2C") : (afford ? Hex("#3B2A1E") : new Color(0.07f, 0.19f, 0.23f, 0.4f)), TextAlignmentOptions.Center, true);
-            int idx = i;
-            Clickable(btn.gameObject, () => { if (!owned[key[idx]] && coins >= narx[idx]) { owned[key[idx]] = true; if (wear.ContainsKey(key[idx])) wear[key[idx]] = true; coins -= narx[idx]; msg = nm[idx] + " menga yoqdi!"; Save(); Refresh(); } });
-        }
+        ImgBg("dokon");
+        Zone(10, 42, 56, 52, () => Show("home"));
     }
+
 
     void BuildAch()
     {
@@ -1095,63 +953,29 @@ public class MomiqController : MonoBehaviour
 
     void BuildKitob()
     {
-        GradBg("#E4EEE6", "#FFF9EE");
-        HeaderBack("Kitoblar", "Fan kitoblari", "talim", Hex("#3A3330"));
-        MapBtnAt(() => Show("menu"), Hex("#3A3330"));
-        BeginScroll(80);
-        string[] bn = { "Quvnoq matematika 1", "Ingliz tili", "Tabiiy fan", "Savodxonlik" };
-        string[] bf = { "matem", "ingliz", "tabiiy", "savod" };
-        Color[] bc = { Hex("#3A3330"), Hex("#3B9BF0"), Hex("#28D62C"), Hex("#FFB800") };
-        for (int i = 0; i < 4; i++)
-        {
-            string f = bf[i];
-            Card(i.ToString(), 4 + i * 132, 118, bn[i], "80 ta dars", bc[i], i == 3 ? Hex("#3A3330") : Color.white,
-                () => { if (f == "ingliz") Show("ingliz"); else { fan = f; Show("matem"); } });
-        }
-        EndScroll(540);
+        ImgBg("kitob");
+        Zone(10, 42, 56, 52, () => Show("talim"));
+        Zone(22, 100, SW - 44, 120, () => { fan = "matem"; Show("matem"); });
+        Zone(22, 232, SW - 44, 120, () => Show("ingliz"));
+        Zone(22, 364, SW - 44, 120, () => { fan = "tabiiy"; Show("matem"); });
+        Zone(22, 496, SW - 44, 120, () => { fan = "savod"; Show("matem"); });
     }
+
 
     void BuildMatem()
     {
-        string fnom = fan == "tabiiy" ? "Tabiiy fan" : fan == "savod" ? "Savodxonlik" : fan == "ingliz" ? "Ingliz tili" : "Quvnoq matematika";
-        Color hc = fan == "tabiiy" ? Hex("#28D62C") : fan == "savod" ? Hex("#FFB800") : fan == "ingliz" ? Hex("#3B9BF0") : Hex("#3A3330");
-        GradBg("#EAF1EA", "#FFF9EE");
-        HeaderBack(fnom, "80 ta dars", "talim", Hex("#3A3330"));
-        MapBtnAt(() => Show("menu"), Hex("#3A3330"));
-        MomiqAt(SW - 66, 176, 0.5f);
-        BeginScroll(80);
-        Label("dl", 22, 4, 200, 16, "DARSLAR", 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        for (int i = 0; i < 8; i++)
-        {
-            float y = 26 + i * 64;
-            var row = Panel("d" + i, 0, y, SW - 44, 54, Color.white);
-            var ic = Circle("di" + i, 12, y + 7, 40, hc);
-            Label("dn" + i, 12, y + 18, 40, 20, (i + 1).ToString(), 16, Color.white, TextAlignmentOptions.Center, true);
-            Label("dt" + i, 66, y + 16, SW - 160, 22, "Dars " + (i + 1), 17, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            Clickable(row.gameObject, () => StartMashqLesson(fan));
-        }
-        EndScroll(8 * 64 + 30);
+        ImgBg("matem");
+        Zone(10, 42, 56, 52, () => Show("talim"));
+        Zone(0, 130, SW, SH - 130, () => StartMashqLesson(fan));
     }
+
 
     void BuildFanJadval()
     {
-        GradBg("#EAF1EA", "#FFF9EE");
-        HeaderBack("Fanlar reytingi", "Har fanda o'zlashtirish", "talim", Hex("#3A3330"));
-        string[] fk = { "matem", "ingliz", "tabiiy", "savod" };
-        string[] fn = { "Matematika", "Ingliz tili", "Tabiiy fan", "Savodxonlik" };
-        Color[] fc = { Hex("#C8452F"), Hex("#3B9BF0"), Hex("#28D62C"), Hex("#FFB800") };
-        for (int i = 0; i < 4; i++)
-        {
-            float y = 100 + i * 88;
-            Panel("f" + i, 22, y, SW - 44, 74, Color.white);
-            Circle("fi" + i, 34, y + 16, 42, fc[i]);
-            Label("fn" + i, 88, y + 14, SW - 160, 20, fn[i], 17, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            int v = fanlar.ContainsKey(fk[i]) ? fanlar[fk[i]] : 0;
-            Rect2("fbg" + i, 88, y + 44, SW - 160, 8, new Color(0.23f, 0.2f, 0.19f, 0.12f));
-            Rect2("fb" + i, 88, y + 44, (SW - 160) * Mathf.Clamp01(v / 100f), 8, fc[i]);
-            Label("fv" + i, SW - 66, y + 22, 44, 20, v + "%", 15, fc[i], TextAlignmentOptions.Right, true);
-        }
+        ImgBg("fanjadval");
+        Zone(10, 42, 56, 52, () => Show("talim"));
     }
+
 
     void BuildMashq()
     {
@@ -1284,125 +1108,60 @@ public class MomiqController : MonoBehaviour
 
     void BuildHamyon()
     {
-        GradBg("#12303B", "#0E2731");
-        HeaderBack("SSA hamyon", "Tanga va sovg'alar", "home", Color.white);
-        var card = Panel("bal", 22, 96, SW - 44, 96, Hex("#173948"));
-        Circle("bc", 40, 118, 52, Hex("#E29B18"));
-        Label("bl", 40, 130, 52, 24, "SSA", 12, Hex("#8A5C00"), TextAlignmentOptions.Center, true);
-        Label("bv", 104, 118, SW - 160, 34, coins.ToString(), 32, Color.white, TextAlignmentOptions.Left, true);
-        Label("bt", 104, 156, SW - 160, 16, "SSA coin", 12, new Color(1, 1, 1, 0.6f), TextAlignmentOptions.Left, false);
-        BeginScroll(210);
-        Label("h", 22, 4, 260, 16, "QANDAY YIG'ILADI", 10, new Color(1, 1, 1, 0.5f), TextAlignmentOptions.Left, true);
-        string[] wn = { "Darslarni bajarish", "Momiqni parvarish qilish", "Mini-o'yinlar", "Kunlik bonus" };
-        string[] wv = { "+5", "+3", "+2", "+30" };
-        for (int i = 0; i < 4; i++)
-        {
-            float y = 26 + i * 62;
-            Panel("w" + i, 0, y, SW - 44, 52, new Color(1, 1, 1, 0.08f));
-            Label("wn" + i, 16, y + 16, SW - 120, 20, wn[i], 15, Color.white, TextAlignmentOptions.Left, true);
-            Label("wv" + i, SW - 100, y + 16, 56, 20, wv[i], 16, Hex("#28D62C"), TextAlignmentOptions.Right, true);
-        }
-        EndScroll(280);
+        ImgBg("hamyon");
+        Zone(10, 42, 56, 52, () => Show("home"));
     }
+
 
     void BuildStiker()
     {
-        GradBg("#FFF6E4", "#FFF9EE");
-        HeaderBack("Stikerlar", stikerCount + " ta yig'ilgan", "yutuqlar", Hex("#3A3330"));
-        BeginScroll(80);
-        for (int i = 0; i < 12; i++)
-        {
-            float cw = (SW - 44 - 24) / 3f;
-            float x = (i % 3) * (cw + 12);
-            float y = 4 + (i / 3) * (cw + 12);
-            bool got = i < stikerCount;
-            var c = Panel("s" + i, x, y, cw, cw, got ? Hex("#FFE3B0") : new Color(0.23f, 0.2f, 0.19f, 0.06f));
-            if (got) Circle("sc" + i, x + cw / 2f - 22, y + cw / 2f - 26, 44, Hex("#E4573F"));
-            else Label("sl" + i, x, y + cw / 2f - 12, cw, 24, "?", 22, new Color(0.23f, 0.2f, 0.19f, 0.3f), TextAlignmentOptions.Center, true);
-        }
-        EndScroll(4 * ((SW - 68) / 3f + 12) + 20);
+        ImgBg("stiker");
+        Zone(10, 42, 56, 52, () => Show("yutuqlar"));
     }
+
 
     void BuildChop()
     {
-        GradBg("#EAF1EA", "#FFF9EE");
-        HeaderBack("Chop etish", "Diplom va natijalar", "yutuqlar", Hex("#3A3330"));
-        var card = Panel("cert", 30, 110, SW - 60, 300, Color.white);
-        Label("ct", 30, 150, SW - 60, 20, "MOMIQ MAKTABI", 12, Hex("#C8452F"), TextAlignmentOptions.Center, true);
-        Label("cn", 30, 200, SW - 60, 40, nom, 34, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-        Label("cd", 30, 260, SW - 60, 20, daraja + "-daraja · " + organgan.Count + " dars", 14, new Color(0.23f, 0.2f, 0.19f, 0.6f), TextAlignmentOptions.Center, false);
-        MomiqAt(SW / 2f, 400, 0.5f);
-        BigBtn("PDF sifatida chop etish", 30, 440, SW - 60, 54, Hex("#12A83A"), Color.white, 16, () => React("kulgan", "Diplom tayyor!", 1.6f));
+        ImgBg("chop");
+        Zone(10, 42, 56, 52, () => Show("yutuqlar"));
     }
+
 
     void BuildVazifalar()
     {
-        GradBg("#EAF6EC", "#FFF9EE");
-        HeaderBack("Kunlik vazifalar", "Har kuni yangilanadi", "home", Hex("#3A3330"));
-        string[] qn = { "3 ta dars bajar", "Momiqni ovqatlantir", "1 mini-o'yin o'yna" };
-        int[] qc = { organgan.Count, hisob.ContainsKey("ovqat") ? hisob["ovqat"] : 0, hisob.ContainsKey("oyin") ? hisob["oyin"] : 0 };
-        int[] qk = { 3, 1, 1 };
-        for (int i = 0; i < 3; i++)
-        {
-            float y = 100 + i * 92;
-            int cur = Mathf.Min(qc[i], qk[i]);
-            bool done = qc[i] >= qk[i];
-            Panel("q" + i, 22, y, SW - 44, 78, Color.white);
-            Label("qn" + i, 38, y + 14, SW - 130, 20, qn[i], 16, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            Label("qp" + i, 38, y + 38, 120, 16, cur + "/" + qk[i], 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Left, false);
-            var b = Panel("qb" + i, SW - 116, y + 20, 94, 38, done ? Hex("#12A83A") : new Color(0.23f, 0.2f, 0.19f, 0.08f));
-            Label("qbt" + i, SW - 116, y + 30, 94, 18, done ? "+10" : "...", 14, done ? Color.white : new Color(0.23f, 0.2f, 0.19f, 0.4f), TextAlignmentOptions.Center, true);
-        }
+        ImgBg("vazifalar");
+        Zone(10, 42, 56, 52, () => Show("home"));
     }
+
 
     void BuildRekordlar()
     {
-        GradBg("#12303B", "#0E2731");
-        HeaderBack("Rekordlar", "Eng yaxshilar", "home", Color.white);
-        string[] rn = { "Diyor", "Malika", nom, "Jasur", "Ozoda" };
-        int[] rp = { 320, 280, coins, 210, 180 };
-        // saralash
-        var order = new System.Collections.Generic.List<int> { 0, 1, 2, 3, 4 };
-        order.Sort((a, b) => rp[b] - rp[a]);
-        for (int i = 0; i < order.Count; i++)
-        {
-            int idx = order[i];
-            float y = 100 + i * 68;
-            bool me = idx == 2;
-            Panel("r" + i, 22, y, SW - 44, 56, me ? Hex("#1E7A8C") : new Color(1, 1, 1, 0.08f));
-            Label("rr" + i, 34, y + 16, 30, 24, (i + 1).ToString(), 18, me ? Color.white : Hex("#E9A62B"), TextAlignmentOptions.Center, true);
-            Circle("rc" + i, 70, y + 12, 32, me ? Color.white : new Color(1, 1, 1, 0.2f));
-            Label("rn" + i, 112, y + 16, SW - 200, 24, rn[idx], 16, Color.white, TextAlignmentOptions.Left, true);
-            Label("rp" + i, SW - 100, y + 16, 56, 24, rp[idx].ToString(), 16, Hex("#E9A62B"), TextAlignmentOptions.Right, true);
-        }
+        ImgBg("rekordlar");
+        Zone(10, 42, 56, 52, () => Show("home"));
     }
+
 
     void BuildAnalitika()
     {
-        GradBg("#EAF1EA", "#FFF9EE");
-        HeaderBack("Tahlil", "Natijalar", "home", Hex("#3A3330"));
-        var t = Panel("tg", 22, 100, (SW - 56) / 2f, 80, Color.white);
-        Label("tgv", 22, 116, (SW - 56) / 2f, 30, statTogri.ToString(), 28, Hex("#12A83A"), TextAlignmentOptions.Center, true);
-        Label("tgl", 22, 150, (SW - 56) / 2f, 16, "To'g'ri", 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Center, false);
-        float x2 = 22 + (SW - 56) / 2f + 12;
-        Panel("tx", x2, 100, (SW - 56) / 2f, 80, Color.white);
-        Label("txv", x2, 116, (SW - 56) / 2f, 30, statXato.ToString(), 28, Hex("#E4573F"), TextAlignmentOptions.Center, true);
-        Label("txl", x2, 150, (SW - 56) / 2f, 16, "Xato", 12, new Color(0.23f, 0.2f, 0.19f, 0.55f), TextAlignmentOptions.Center, false);
-        Label("wl", 22, 200, 200, 16, "SHU HAFTA", 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Left, true);
-        string[] dn = { "D", "S", "C", "P", "J", "S", "Y" };
-        int[] hv = { 3, 5, 2, 6, 4, 1, 3 };
-        for (int i = 0; i < 7; i++)
-        {
-            float cw = (SW - 44) / 7f;
-            float x = 22 + i * cw;
-            float h = 20 + hv[i] * 14;
-            Rect2("hb" + i, x + 4, 340 - h, cw - 8, h, Hex("#28D62C"));
-            Label("hd" + i, x, 344, cw, 16, dn[i], 10, new Color(0.23f, 0.2f, 0.19f, 0.5f), TextAlignmentOptions.Center, true);
-        }
+        ImgBg("analitika");
+        Zone(10, 42, 56, 52, () => Show("yutuqlar"));
     }
 
-    void BuildDiplom() { CertScreen("Diplom", "home"); }
-    void BuildSertifikat() { CertScreen("Sertifikat", "yutuqlar"); }
+
+    void BuildDiplom()
+    {
+        ImgBg("diplom");
+        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(24, SH - 90, SW - 48, 60, () => Show("chop"));
+    }
+
+    void BuildSertifikat()
+    {
+        ImgBg("sertifikat");
+        Zone(10, 42, 56, 52, () => Show("yutuqlar"));
+        Zone(24, SH - 90, SW - 48, 60, () => Show("chop"));
+    }
+
     void CertScreen(string title, string back)
     {
         GradBg("#FFF6E4", "#FFF9EE");
