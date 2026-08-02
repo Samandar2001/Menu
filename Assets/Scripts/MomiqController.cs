@@ -888,9 +888,34 @@ public class MomiqController : MonoBehaviour
 
     void BuildMashq()
     {
-        ImgBg("mashq");
-        Zone(10, 42, 56, 52, () => Show("matem"));
+        GradBg("#E4EEE6", "#FFF9EE");
+        if (mq.Count == 0) { StartMashqLesson(fan); return; }
+        string fnom = fan == "tabiiy" ? "Tabiiy fan" : fan == "savod" ? "Savodxonlik" : fan == "ingliz" ? "Ingliz tili" : "Matematika";
+        HeaderBack(fnom, "Mashq " + (mqIdx + 1) + "/" + mq.Count, "matem", Hex("#3A3330"));
+        var q = mq[mqIdx];
+        MomiqAt(SW - 66, 150, 0.5f);
+        Panel("qp", 22, 92, SW - 44, 84, Color.white);
+        Label("qt", 34, 108, SW - 68, 56, q.prompt, 19, Hex("#3A3330"), TextAlignmentOptions.Center, true);
+        if (q.dots > 0)
+            for (int i = 0; i < q.dots; i++)
+            {
+                float x = 40 + (i % 5) * 62; float y = 200 + (i / 5) * 62;
+                Circle("ap" + i, x, y, 52, q.dotCol);
+            }
+        int n = q.opts.Length;
+        for (int i = 0; i < n; i++)
+        {
+            float cw = (SW - 44 - 12) / 2f;
+            float x = 22 + (i % 2) * (cw + 12);
+            float y = 340 + (i / 2) * 92;
+            var b = Panel("o" + i, x, y, cw, 80, Hex("#FFF8EA"));
+            Label("ol" + i, x, y + 20, cw, 44, q.opts[i], 34, Hex("#3A3330"), TextAlignmentOptions.Center, true);
+            int idx = i;
+            Clickable(b.gameObject, () => AnswerMashq(idx));
+        }
+        if (mqResult != "") Label("mr", 0, 500, SW, 26, mqResult, 20, Hex("#12A83A"), TextAlignmentOptions.Center, true);
     }
+
 
 
     void StartMashqLesson(string f)
