@@ -999,9 +999,14 @@ public class MomiqController : MonoBehaviour
 
     void BuildHamyon()
     {
-        ImgBg("hamyon");
+        var content = BeginScroll(0);
+        var rt = Node("bg", content, 0, 0, SW, 1000);
+        rt.gameObject.AddComponent<Image>().sprite = UiSprite("hamyon");
+        Zone(22, 400, 170, 56, () => Show("dokon"));
+        EndScroll(1000);
         Zone(10, 42, 56, 52, () => Show("home"));
     }
+
 
 
     void BuildStiker()
