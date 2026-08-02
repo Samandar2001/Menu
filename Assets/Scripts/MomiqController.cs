@@ -346,13 +346,22 @@ public class MomiqController : MonoBehaviour
 
     void BuildTalim()
     {
-        ImgBg("talim");
-        Zone(24, 80, 48, 52, () => Show("home"));
-        Zone(76, 80, 48, 52, () => Show("menu"));
-        Zone(20, 352, SW - 40, 145, () => { fan = "matem"; Show("matem"); });
-        Zone(20, 505, SW - 40, 160, () => Show("ingliz"));
-        Zone(20, 692, SW - 40, 145, () => { fan = "tabiiy"; Show("matem"); });
+        var content = BeginScroll(0);
+        var rt = Node("bg", content, 0, 0, SW, 1650);
+        rt.gameObject.AddComponent<Image>().sprite = UiSprite("talim");
+        Zone(22, 342, 346, 150, () => { fan = "matem"; Show("matem"); });
+        Zone(22, 506, 346, 150, () => Show("ingliz"));
+        Zone(22, 670, 346, 150, () => { fan = "tabiiy"; Show("matem"); });
+        Zone(22, 834, 346, 150, () => { fan = "savod"; Show("matem"); });
+        Zone(22, 998, 346, 72, () => Show("fanjadval"));
+        Zone(22, 1119, 346, 154, () => Show("harf"));
+        Zone(22, 1287, 346, 154, () => Show("rang"));
+        Zone(22, 1455, 346, 154, () => Show("oyinlar"));
+        EndScroll(1650);
+        Zone(22, 66, 48, 48, () => Show("home"));
+        Zone(76, 66, 48, 48, () => Show("menu"));
     }
+
 
 
 
