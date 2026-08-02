@@ -33,6 +33,9 @@ public class MomiqController : MonoBehaviour
     int statTogri = 0, statXato = 0, stikerCount = 3;
     System.Collections.Generic.List<int> tartibSeq = new System.Collections.Generic.List<int>();
     int tartibIdx = 0;
+    class MQ { public string prompt; public int dots; public Color dotCol; public string[] opts; public int correct; }
+    readonly System.Collections.Generic.List<MQ> mq = new System.Collections.Generic.List<MQ>();
+    int mqIdx = 0; string mqResult = "";
     string bola = "";
     int xp = 30, daraja = 2;
     bool levelUp = false;
@@ -1222,7 +1225,7 @@ public class MomiqController : MonoBehaviour
             var ic = Circle("di" + i, 12, y + 7, 40, hc);
             Label("dn" + i, 12, y + 18, 40, 20, (i + 1).ToString(), 16, Color.white, TextAlignmentOptions.Center, true);
             Label("dt" + i, 66, y + 16, SW - 160, 22, "Dars " + (i + 1), 17, Hex("#3A3330"), TextAlignmentOptions.Left, true);
-            Clickable(row.gameObject, () => { if (fan == "tabiiy") NewColor(); else if (fan == "savod") Show("harf"); else if (fan == "ingliz") Show("ingliz"); else NewCount(); });
+            Clickable(row.gameObject, () => StartMashqLesson(fan));
         }
         EndScroll(8 * 64 + 30);
     }
@@ -1249,10 +1252,131 @@ public class MomiqController : MonoBehaviour
 
     void BuildMashq()
     {
-        GradBg("#EAF1EA", "#FFF9EE");
-        HeaderBack("Mashq", "Bilimingizni sinang", "talim", Hex("#3A3330"));
-        MomiqAt(SW / 2f, 420, 0.9f);
-        BigBtn("Boshlash", 40, 480, SW - 80, 58, Hex("#12A83A"), Color.white, 20, () => NewCount());
+        GradBg("#E4EEE6", "#FFF9EE");
+        if (mq.Count == 0) { StartMashqLesson(fan); return; }
+        string fnom = fan == "tabiiy" ? "Tabiiy fan" : fan == "savod" ? "Savodxonlik" : fan == "ingliz" ? "Ingliz tili" : "Matematika";
+        HeaderBack(fnom, "Mashq " + (mqIdx + 1) + "/" + mq.Count, "matem", Hex("#3A3330"));
+        var q = mq[mqIdx];
+        MomiqAt(SW - 66, 150, 0.5f);
+        Panel("qp", 22, 92, SW - 44, 84, Color.white);
+        Label("qt", 34, 108, SW - 68, 56, q.prompt, 19, Hex("#3A3330"), TextAlignmentOptions.Center, true);
+        if (q.dots > 0)
+        {
+            for (int i = 0; i < q.dots; i++)
+            {
+                float x = 40 + (i % 5) * 62;
+                float y = 200 + (i / 5) * 62;
+                Circle("ap" + i, x, y, 52, q.dotCol);
+            }
+        }
+        int n = q.opts.Length;
+        for (int i = 0; i < n; i++)
+        {
+            float cw = (SW - 44 - 12) / 2f;
+            float x = 22 + (i % 2) * (cw + 12);
+            float y = 340 + (i / 2) * 92;
+            var b = Panel("o" + i, x, y, cw, 80, Hex("#FFF8EA"));
+            Label("ol" + i, x, y + 20, cw, 44, q.opts[i], 34, Hex("#3A3330"), TextAlignmentOptions.Center, true);
+            int idx = i;
+            Clickable(b.gameObject, () => AnswerMashq(idx));
+        }
+        if (mqResult != "") Label("mr", 0, 500, SW, 26, mqResult, 20, Hex("#12A83A"), TextAlignmentOptions.Center, true);
+    }
+
+    void StartMashqLesson(string f)
+    {
+        fan = f; mq.Clear();
+        for (int i = 0; i < 5; i++) mq.Add(GenQ(f));
+        mqIdx = 0; mqResult = "";
+        Show("mashq");
+    }
+
+    MQ GenQ(string f)
+    {
+        var q = new MQ(); q.dotCol = Hex("#C8452F");
+        if (f == "ingliz")
+        {
+            var w = inglizSozlar[UnityEngine.Random.Range(0, inglizSozlar.Length)];
+            var pool = new System.Collections.Generic.List<string>();
+            foreach (var x in inglizSozlar) pool.Add(x.uz);
+            int ci; q.opts = MakeStrOpts(w.uz, pool, out ci); q.correct = ci;
+            q.prompt = "\"" + w.en + "\" - tarjimasi?";
+        }
+        else if (f == "savod")
+        {
+            var h = harflar[UnityEngine.Random.Range(0, harflar.Length)];
+            var pool = new System.Collections.Generic.List<string>();
+            foreach (var x in harflar) pool.Add(x.s);
+            int ci; q.opts = MakeStrOpts(h.s, pool, out ci); q.correct = ci;
+            q.prompt = "'" + h.h + "' harfi qaysi so'zda bor?";
+        }
+        else if (f == "tabiiy")
+        {
+            var r = ranglar[UnityEngine.Random.Range(0, ranglar.Length)];
+            var pool = new System.Collections.Generic.List<string>();
+            foreach (var x in ranglar) pool.Add(x.nom);
+            int ci; q.opts = MakeStrOpts(r.nom, pool, out ci); q.correct = ci;
+            q.prompt = r.nom + " rangni tanlang";
+        }
+        else
+        {
+            int sub = UnityEngine.Random.Range(0, 3);
+            if (sub == 0)
+            {
+                int nn = UnityEngine.Random.Range(1, 11); int ci;
+                q.opts = MakeNumOpts(nn, 1, 10, out ci); q.correct = ci; q.dots = nn; q.prompt = "Nechta?";
+            }
+            else if (sub == 1)
+            {
+                int a = UnityEngine.Random.Range(1, 10), b; do { b = UnityEngine.Random.Range(1, 10); } while (b == a);
+                q.opts = new string[] { a.ToString(), b.ToString() }; q.correct = a > b ? 0 : 1; q.prompt = "Qaysi son katta?";
+            }
+            else
+            {
+                int st = UnityEngine.Random.Range(1, 7); int miss = st + 1; int ci;
+                q.opts = MakeNumOpts(miss, 1, 10, out ci); q.correct = ci; q.prompt = st + ", ?, " + (st + 2) + " - yetishmagan son?";
+            }
+        }
+        return q;
+    }
+
+    string[] MakeNumOpts(int correct, int lo, int hi, out int ci)
+    {
+        var set = new System.Collections.Generic.List<int> { correct };
+        int guard = 0;
+        while (set.Count < 4 && guard++ < 60) { int r = UnityEngine.Random.Range(lo, hi + 1); if (!set.Contains(r)) set.Add(r); }
+        for (int i = set.Count - 1; i > 0; i--) { int j = UnityEngine.Random.Range(0, i + 1); var t = set[i]; set[i] = set[j]; set[j] = t; }
+        ci = set.IndexOf(correct);
+        string[] o = new string[set.Count];
+        for (int i = 0; i < set.Count; i++) o[i] = set[i].ToString();
+        return o;
+    }
+    string[] MakeStrOpts(string correct, System.Collections.Generic.List<string> pool, out int ci)
+    {
+        var set = new System.Collections.Generic.List<string> { correct };
+        int guard = 0;
+        while (set.Count < 4 && guard++ < 60) { var r = pool[UnityEngine.Random.Range(0, pool.Count)]; if (!set.Contains(r)) set.Add(r); }
+        for (int i = set.Count - 1; i > 0; i--) { int j = UnityEngine.Random.Range(0, i + 1); var t = set[i]; set[i] = set[j]; set[j] = t; }
+        ci = set.IndexOf(correct);
+        return set.ToArray();
+    }
+
+    void AnswerMashq(int i)
+    {
+        var q = mq[mqIdx];
+        if (i == q.correct)
+        {
+            statTogri++; coins += 2; AddFan(fan, 5); AddXp(3, null);
+            if (mqIdx >= mq.Count - 1)
+            {
+                coins += 10; if (!organgan.Contains("m" + mq.Count)) organgan.Add("dars" + statTogri);
+                mood = "kulgan"; msg = "Dars tugadi! +10 tanga"; mqResult = "Dars tugadi!"; mq.Clear(); Save();
+                Refresh();
+                StartCoroutine(Delay(1.3f, () => Show("matem")));
+            }
+            else { mqIdx++; mqResult = ""; mood = "kulgan"; Refresh(); }
+        }
+        else { statXato++; mqResult = "Yana urinib ko'ring"; mood = "xafa"; Refresh(); }
     }
 
     void BuildHamyon()
