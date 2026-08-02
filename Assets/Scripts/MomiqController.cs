@@ -428,7 +428,7 @@ public class MomiqController : MonoBehaviour
     void BuildShop()
     {
         var content = BeginScroll(0);
-        var rt = Node("bg", content, 0, 0, SW, 1000);
+        var rt = Node("bg", content, 0, 0, SW, 1562);
         rt.gameObject.AddComponent<Image>().sprite = UiSprite("dokon");
         Zone(300, 224, 80, 44, () => BuyItem("kozoynak", 33));
         Zone(30, 430, 155, 42, () => BuyItem("sharf", 40));
@@ -437,7 +437,7 @@ public class MomiqController : MonoBehaviour
         Zone(205, 628, 155, 42, () => BuyItem("gul", 35));
         Zone(30, 822, 155, 42, () => BuyItem("qongiroq", 70));
         Zone(205, 822, 155, 42, () => BuyItem("gilam", 120));
-        EndScroll(1000);
+        EndScroll(1562);
         Zone(10, 42, 52, 52, () => Show("home"));
         Zone(64, 42, 52, 52, () => Show("menu"));
     }
@@ -1012,10 +1012,10 @@ public class MomiqController : MonoBehaviour
     void BuildHamyon()
     {
         var content = BeginScroll(0);
-        var rt = Node("bg", content, 0, 0, SW, 1000);
+        var rt = Node("bg", content, 0, 0, SW, 3050);
         rt.gameObject.AddComponent<Image>().sprite = UiSprite("hamyon");
-        Zone(22, 400, 170, 56, () => Show("dokon"));
-        EndScroll(1000);
+        Zone(22, 372, 168, 56, () => Show("dokon"));
+        EndScroll(3050);
         Zone(10, 42, 56, 52, () => Show("home"));
     }
 
