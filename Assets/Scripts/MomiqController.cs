@@ -427,9 +427,21 @@ public class MomiqController : MonoBehaviour
 
     void BuildShop()
     {
-        ImgBg("dokon");
-        Zone(10, 42, 56, 52, () => Show("home"));
+        var content = BeginScroll(0);
+        var rt = Node("bg", content, 0, 0, SW, 1000);
+        rt.gameObject.AddComponent<Image>().sprite = UiSprite("dokon");
+        Zone(300, 224, 80, 44, () => BuyItem("kozoynak", 33));
+        Zone(30, 430, 155, 42, () => BuyItem("sharf", 40));
+        Zone(205, 430, 155, 42, () => BuyItem("chopon", 60));
+        Zone(30, 628, 155, 42, () => BuyItem("kozoynak", 33));
+        Zone(205, 628, 155, 42, () => BuyItem("gul", 35));
+        Zone(30, 822, 155, 42, () => BuyItem("qongiroq", 70));
+        Zone(205, 822, 155, 42, () => BuyItem("gilam", 120));
+        EndScroll(1000);
+        Zone(10, 42, 52, 52, () => Show("home"));
+        Zone(64, 42, 52, 52, () => Show("menu"));
     }
+
 
 
     void BuildAch()
@@ -1111,6 +1123,13 @@ public class MomiqController : MonoBehaviour
         var g = Node("mapi2", buildRoot, SW - 48, 32, 20, 20);
         var gi = g.gameObject.AddComponent<Image>(); gi.sprite = triSp; gi.color = stroke; gi.raycastTarget = false;
         Clickable(b.gameObject, a);
+    }
+    void BuyItem(string key, int price)
+    {
+        bool own = owned.ContainsKey(key) && owned[key];
+        if (own) { msg = "Allaqachon olingan!"; }
+        else if (coins >= price) { coins -= price; owned[key] = true; if (wear.ContainsKey(key)) wear[key] = true; coins += 0; React("kulgan", "Olindi! Rahmat.", 1.4f); Save(); }
+        else { React("xafa", "Coin yetarli emas.", 1.4f); }
     }
     void Clickable(GameObject go, Action onClick)
     {
