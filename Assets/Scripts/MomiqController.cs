@@ -346,21 +346,14 @@ public class MomiqController : MonoBehaviour
 
     void BuildTalim()
     {
-        var content = BeginScroll(0);
-        var rt = Node("bg", content, 0, 0, SW, 1650);
-        rt.gameObject.AddComponent<Image>().sprite = UiSprite("talim");
-        Zone(22, 342, 346, 150, () => { fan = "matem"; Show("matem"); });
-        Zone(22, 506, 346, 150, () => Show("ingliz"));
-        Zone(22, 670, 346, 150, () => { fan = "tabiiy"; Show("matem"); });
-        Zone(22, 834, 346, 150, () => { fan = "savod"; Show("matem"); });
-        Zone(22, 998, 346, 72, () => Show("fanjadval"));
-        Zone(22, 1119, 346, 154, () => Show("harf"));
-        Zone(22, 1287, 346, 154, () => Show("rang"));
-        Zone(22, 1455, 346, 154, () => Show("oyinlar"));
-        EndScroll(1650);
-        Zone(22, 66, 48, 48, () => Show("home"));
-        Zone(76, 66, 48, 48, () => Show("menu"));
+        ImgBg("talim");
+        Zone(24, 80, 48, 52, () => Show("home"));
+        Zone(76, 80, 48, 52, () => Show("menu"));
+        Zone(20, 352, SW - 40, 148, () => { fan = "matem"; Show("matem"); });
+        Zone(20, 506, SW - 40, 158, () => Show("ingliz"));
+        Zone(20, 692, SW - 40, 145, () => { fan = "tabiiy"; Show("matem"); });
     }
+
 
 
 
@@ -395,29 +388,14 @@ public class MomiqController : MonoBehaviour
 
     void BuildHub()
     {
-        var content = BeginScroll(0);
-        var rt = Node("bg", content, 0, 0, SW, 1860);
-        rt.gameObject.AddComponent<Image>().sprite = UiSprite("oyinlar");
-        Zone(22, 142, 346, 190, () => Show("oyin"));
-        Zone(22, 346, 346, 190, () => Show("oyin"));
-        Zone(22, 550, 346, 190, () => StartMemory());
-        Zone(22, 754, 346, 150, () => StartMashqLesson("matem"));
-        Zone(22, 953, 168, 118, () => StartMashqLesson("matem"));
-        Zone(201, 953, 168, 118, () => StartMashqLesson("savod"));
-        Zone(22, 1082, 168, 118, () => StartMashqLesson("savod"));
-        Zone(201, 1082, 168, 118, () => StartMashqLesson("matem"));
-        Zone(22, 1211, 168, 118, () => StartMashqLesson("tabiiy"));
-        Zone(201, 1211, 168, 118, () => StartMashqLesson("tabiiy"));
-        Zone(22, 1340, 168, 118, () => StartMashqLesson("matem"));
-        Zone(201, 1340, 168, 118, () => StartMashqLesson("matem"));
-        Zone(22, 1469, 168, 118, () => StartMashqLesson("matem"));
-        Zone(22, 1601, 346, 78, () => Show("rekordlar"));
-        Zone(22, 1693, 346, 60, () => Show("yutuqlar"));
-        Zone(22, 1767, 346, 60, () => { if (!giftTaken) { giftTaken = true; coins += 30; React("kulgan", "Sovg'a uchun rahmat! +30", 1.5f); Save(); } });
-        EndScroll(1860);
-        Zone(22, 66, 48, 48, () => Show("home"));
-        Zone(76, 66, 48, 48, () => Show("menu"));
+        ImgBg("oyinlar");
+        Zone(24, 84, 52, 52, () => Show("home"));
+        Zone(80, 84, 52, 52, () => Show("menu"));
+        Zone(20, 150, SW - 40, 195, () => Show("oyin"));
+        Zone(20, 360, SW - 40, 190, () => Show("oyin"));
+        Zone(20, 565, SW - 40, 190, () => StartMemory());
     }
+
 
 
 
@@ -448,8 +426,10 @@ public class MomiqController : MonoBehaviour
     void BuildShop()
     {
         ImgBg("dokon");
-        Zone(10, 42, 56, 52, () => Show("home"));
+        Zone(24, 66, 52, 52, () => Show("home"));
+        Zone(80, 66, 52, 52, () => Show("menu"));
     }
+
 
 
     void BuildAch()
@@ -1049,13 +1029,11 @@ public class MomiqController : MonoBehaviour
 
     void BuildHamyon()
     {
-        var content = BeginScroll(0);
-        var rt = Node("bg", content, 0, 0, SW, 1384);
-        rt.gameObject.AddComponent<Image>().sprite = UiSprite("hamyon");
-        Zone(22, 372, 168, 56, () => Show("dokon"));
-        EndScroll(1384);
-        Zone(10, 42, 56, 52, () => Show("home"));
+        ImgBg("hamyon");
+        Zone(24, 66, 52, 52, () => Show("home"));
+        Zone(22, 245, 168, 54, () => Show("dokon"));
     }
+
 
 
 
