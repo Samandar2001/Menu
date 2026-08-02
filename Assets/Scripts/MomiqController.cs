@@ -347,13 +347,13 @@ public class MomiqController : MonoBehaviour
     void BuildTalim()
     {
         ImgBg("talim");
-        Zone(10, 42, 56, 52, () => Show("home"));
-        Zone(60, 42, 50, 52, () => Show("menu"));
-        Zone(22, 150, SW - 44, 155, () => { fan = "matem"; Show("matem"); });
-        Zone(22, 310, SW - 44, 155, () => Show("ingliz"));
-        Zone(22, 470, SW - 44, 155, () => { fan = "tabiiy"; Show("matem"); });
-        Zone(22, 630, SW - 44, 150, () => { fan = "savod"; Show("matem"); });
+        Zone(24, 80, 48, 52, () => Show("home"));
+        Zone(76, 80, 48, 52, () => Show("menu"));
+        Zone(20, 352, SW - 40, 145, () => { fan = "matem"; Show("matem"); });
+        Zone(20, 505, SW - 40, 160, () => Show("ingliz"));
+        Zone(20, 692, SW - 40, 145, () => { fan = "tabiiy"; Show("matem"); });
     }
+
 
 
     void BuildSanoq()
