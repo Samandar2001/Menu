@@ -228,21 +228,21 @@ public class MomiqController : MonoBehaviour
     void BuildMenu()
     {
         ImgBg("menu");
-        float mapTop = 172f, mapH = SH - 172f - 152f;
-        string[] bek = { "home", "talim", "oshxona", "yotoq", "oyinlar", "dokon", "garderob", "hammom", "upgxona" };
-        float[] bx = { 26, 74, 74, 26, 26, 74, 74, 26, 50 };
-        float[] by = { 1, 1, 24, 24, 46, 46, 68, 68, 90 };
-        for (int i = 0; i < 9; i++)
-        {
-            float cx = bx[i] / 100f * SW, cy = mapTop + by[i] / 100f * mapH;
-            string ek = bek[i];
-            Zone(cx - 46, cy - 8, 92, 112, () => MenuGo(ek));
-        }
-        Zone(14, 50, 108, 46, () => Show("hamyon"));
-        Zone(SW - 108, 50, 44, 46, () => Show("yutuqlar"));
-        Zone(SW - 60, 50, 44, 46, () => Show("sozlamalar"));
-        Zone(SW - 134, SH - 74, 118, 60, () => { if (nomSet) Show("home"); else Show("ism"); });
+        Zone(16, 52, 92, 48, () => Show("hamyon"));
+        Zone(267, 52, 50, 48, () => Show("rekordlar"));
+        Zone(324, 52, 50, 48, () => Show("sozlamalar"));
+        Zone(26, 177, 150, 118, () => MenuGo("home"));
+        Zone(214, 177, 150, 118, () => MenuGo("talim"));
+        Zone(214, 297, 150, 118, () => MenuGo("oshxona"));
+        Zone(26, 297, 150, 118, () => MenuGo("yotoq"));
+        Zone(26, 411, 150, 118, () => MenuGo("oyinlar"));
+        Zone(214, 411, 150, 118, () => MenuGo("dokon"));
+        Zone(214, 526, 150, 118, () => MenuGo("garderob"));
+        Zone(26, 526, 150, 118, () => MenuGo("hammom"));
+        Zone(120, 640, 150, 118, () => MenuGo("upgxona"));
+        Zone(258, 762, 102, 48, () => { if (nomSet) Show("home"); else Show("ism"); });
     }
+
 
     void MenuGo(string ek)
     {
@@ -301,16 +301,16 @@ public class MomiqController : MonoBehaviour
     void BuildHome()
     {
         ImgBg("home_" + makon);
-        if (makon != "home") Zone(18, SH - 150, SW - 36, 50, () => JoyOchish(makon));
-        else Zone(18, SH - 150, SW - 36, 50, () => { makon = "talim"; Show("home"); });
-        Zone(18, SH - 91, 66, 48, () => Show("yutuqlar"));
-        Zone(92, SH - 91, SW - 110, 48, () => Show("menu"));
-        Zone(24, 56, 100, 40, () => Show("hamyon"));
-        Zone(SW - 64, 56, 40, 40, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
-        Zone(SW / 2f - 70, 300, 140, 220, () => { Bump(ref joy, 6); AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
+        Zone(80, 392, 230, 250, () => { Bump(ref joy, 6); hearts = true; AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
+        Zone(24, 62, 90, 44, () => Show("hamyon"));
+        Zone(322, 64, 44, 44, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
+        if (makon != "home") Zone(18, 706, SW - 36, 54, () => JoyOchish(makon));
+        Zone(16, 764, 76, 58, () => Show("yutuqlar"));
+        Zone(94, 764, SW - 112, 58, () => Show("menu"));
         if (mood == "uyquda" && !bath) BuildNightOverlay();
         if (bath) BuildBathOverlay();
     }
+
 
     void BuildNightOverlay()
     {
@@ -395,11 +395,30 @@ public class MomiqController : MonoBehaviour
 
     void BuildHub()
     {
-        ImgBg("oyinlar");
-        Zone(10, 42, 56, 52, () => Show("home"));
-        Zone(22, 120, SW - 44, 190, () => Show("oyin"));
-        Zone(22, 320, SW - 44, 190, () => StartMemory());
+        var content = BeginScroll(0);
+        var rt = Node("bg", content, 0, 0, SW, 1860);
+        rt.gameObject.AddComponent<Image>().sprite = UiSprite("oyinlar");
+        Zone(22, 142, 346, 190, () => Show("oyin"));
+        Zone(22, 346, 346, 190, () => Show("oyin"));
+        Zone(22, 550, 346, 190, () => StartMemory());
+        Zone(22, 754, 346, 150, () => StartMashqLesson("matem"));
+        Zone(22, 953, 168, 118, () => StartMashqLesson("matem"));
+        Zone(201, 953, 168, 118, () => StartMashqLesson("savod"));
+        Zone(22, 1082, 168, 118, () => StartMashqLesson("savod"));
+        Zone(201, 1082, 168, 118, () => StartMashqLesson("matem"));
+        Zone(22, 1211, 168, 118, () => StartMashqLesson("tabiiy"));
+        Zone(201, 1211, 168, 118, () => StartMashqLesson("tabiiy"));
+        Zone(22, 1340, 168, 118, () => StartMashqLesson("matem"));
+        Zone(201, 1340, 168, 118, () => StartMashqLesson("matem"));
+        Zone(22, 1469, 168, 118, () => StartMashqLesson("matem"));
+        Zone(22, 1601, 346, 78, () => Show("rekordlar"));
+        Zone(22, 1693, 346, 60, () => Show("yutuqlar"));
+        Zone(22, 1767, 346, 60, () => { if (!giftTaken) { giftTaken = true; coins += 30; React("kulgan", "Sovg'a uchun rahmat! +30", 1.5f); Save(); } });
+        EndScroll(1860);
+        Zone(22, 66, 48, 48, () => Show("home"));
+        Zone(76, 66, 48, 48, () => Show("menu"));
     }
+
 
 
     void BuildGame()
@@ -883,9 +902,14 @@ public class MomiqController : MonoBehaviour
     void BuildMatem()
     {
         ImgBg("matem");
-        Zone(10, 42, 56, 52, () => Show("talim"));
-        Zone(0, 130, SW, SH - 130, () => StartMashqLesson(fan));
+        Zone(22, 58, 48, 48, () => Show("talim"));
+        Zone(76, 58, 48, 48, () => Show("menu"));
+        Zone(22, 120, 346, 118, () => StartMashqLesson(fan));
+        Zone(22, 249, 346, 118, () => StartMashqLesson(fan));
+        Zone(22, 378, 346, 118, () => StartMashqLesson(fan));
+        Zone(22, 507, 346, 118, () => StartMashqLesson(fan));
     }
+
 
 
     void BuildFanJadval()
