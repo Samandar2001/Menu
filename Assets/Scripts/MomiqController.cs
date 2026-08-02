@@ -301,16 +301,16 @@ public class MomiqController : MonoBehaviour
     void BuildHome()
     {
         ImgBg("home_" + makon);
-        if (makon != "home") Zone(18, SH - 150, SW - 36, 50, () => JoyOchish(makon));
-        else Zone(18, SH - 150, SW - 36, 50, () => { makon = "talim"; Show("home"); });
-        Zone(18, SH - 91, 66, 48, () => Show("yutuqlar"));
-        Zone(92, SH - 91, SW - 110, 48, () => Show("menu"));
-        Zone(24, 56, 100, 40, () => Show("hamyon"));
-        Zone(SW - 64, 56, 40, 40, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
-        Zone(SW / 2f - 70, 300, 140, 220, () => { Bump(ref joy, 6); AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
+        Zone(22, 56, 104, 40, () => Show("hamyon"));
+        Zone(324, 56, 42, 42, () => { if (mood == "uyquda") React("xursand", "Xayrli tong!", 1.5f); else React("uyquda", "Alla-yo... uxlayapman.", 0); });
+        Zone(SW / 2f - 95, 380, 190, 270, () => { Bump(ref joy, 6); hearts = true; AddXp(6, "erkalash"); React("kulgan", "Ie-he-he, yoqimli!", 1.5f); });
+        if (makon != "home") Zone(18, 712, SW - 36, 54, () => JoyOchish(makon));
+        Zone(14, 770, 76, 54, () => Show("yutuqlar"));
+        Zone(94, 770, SW - 112, 54, () => Show("menu"));
         if (mood == "uyquda" && !bath) BuildNightOverlay();
         if (bath) BuildBathOverlay();
     }
+
 
     void BuildNightOverlay()
     {
