@@ -358,99 +358,31 @@ public class MomiqController : MonoBehaviour
 
     void BuildSanoq()
     {
-        BgFlat(Hex("#0E2731"));
-        Rect2("light", 0, 300, SW, SH - 300, Hex("#FBF3E4"));
-        Back(() => Show("talim"), Hex("#FFF6E6"));
-        Label("t", 0, 24, SW, 28, "Nechta olma?", 22, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-
-        var box = Panel("box", 22, 108, SW - 44, 170, new Color(1, 0.96f, 0.9f, 0.08f));
-        for (int i = 0; i < son; i++)
-        {
-            float x = 22 + 30 + (i % 4) * 68;
-            float y = 130 + (i / 4) * 64;
-            Circle("ap" + i, x, y, 54, Hex("#B23F2E"));
-        }
-        for (int i = 0; i < sanoqVariant.Count; i++)
-        {
-            float bw = (SW - 44 - 24) / 3f;
-            float x = 22 + i * (bw + 12);
-            int n = sanoqVariant[i];
-            var b = Panel("v" + i, x, 310, bw, 96, Hex("#FFF8EA"));
-            Label("vt" + i, x, 332, bw, 50, n.ToString(), 44, Hex("#12303B"), TextAlignmentOptions.Center, true);
-            Clickable(b.gameObject, () => AnswerCount(n));
-        }
-        if (natija != "") Label("nat", 0, 420, SW, 26, natija, 20, Hex("#7FA650"), TextAlignmentOptions.Center, true);
-        MomiqAt(SW / 2f, 700, 0.86f);
+        ImgBg("sanoq");
+        Zone(10, 42, 56, 52, () => Show("matem"));
     }
+
 
     void BuildRang()
     {
-        GradBg("#E4EEE6", "#FBF3E4");
-        Back(() => Show("talim"), Hex("#12303B"));
-        Label("t", 0, 24, SW, 28, "Ranglar", 22, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        var q = Panel("q", 22, 102, SW - 44, 80, Hex("#FFFAF0"));
-        Label("qs", 22, 112, SW - 44, 16, "Momiq so'radi:", 13, new Color(0.07f, 0.19f, 0.23f, 0.55f), TextAlignmentOptions.Center, false);
-        Label("qt", 22, 132, SW - 44, 34, target + " rangni top", 28, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        for (int i = 0; i < ranglar.Length; i++)
-        {
-            float cw = (SW - 44 - 14) / 2f;
-            float x = 22 + (i % 2) * (cw + 14);
-            float y = 226 + (i / 2) * 134;
-            var r = ranglar[i];
-            var b = Panel("r" + i, x, y, cw, 110, r.kod);
-            Label("rn" + i, x + 12, y + 84, cw - 24, 20, r.nom, 16, Hex("#FFF6E6"), TextAlignmentOptions.Left, true);
-            Clickable(b.gameObject, () => AnswerColor(r.nom));
-        }
-        if (natija != "") Label("nat", 0, 494, SW, 26, natija, 20, Hex("#7FA650"), TextAlignmentOptions.Center, true);
-        MomiqAt(SW / 2f, 730, 0.8f);
+        ImgBg("rang");
+        Zone(10, 42, 56, 52, () => Show("matem"));
     }
+
 
     void BuildIngliz()
     {
-        GradBg("#E4EEE6", "#FBF3E4");
-        Back(() => Show("talim"), Hex("#12303B"));
-        Label("t", 0, 24, SW, 28, "Ingliz tili", 22, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        var card = Panel("card", 22, 100, SW - 44, 200, Hex("#1E7A8C"));
-        Label("en", 46, 134, SW - 100, 50, inglizSozlar[inglizIndex].en, 46, Hex("#FFF6E6"), TextAlignmentOptions.Left, true);
-        Label("uz", 46, 196, SW - 100, 30, inglizSozlar[inglizIndex].uz, 22, new Color(1, 0.96f, 0.9f, 0.75f), TextAlignmentOptions.Left, true);
-        MomiqAt(SW - 70, 300, 0.6f);
-        for (int i = 0; i < inglizSozlar.Length; i++)
-        {
-            float cw = (SW - 44 - 12) / 2f;
-            float x = 22 + (i % 2) * (cw + 12);
-            float y = 324 + (i / 2) * 76;
-            bool sel = inglizIndex == i;
-            var b = Panel("w" + i, x, y, cw, 64, sel ? Hex("#1E7A8C") : Hex("#FFF8EA"));
-            Label("we" + i, x, y + 12, cw, 22, inglizSozlar[i].en, 18, sel ? Hex("#FFF6E6") : Hex("#12303B"), TextAlignmentOptions.Center, true);
-            Label("wu" + i, x, y + 38, cw, 14, inglizSozlar[i].uz, 11, new Color(sel ? 1 : 0.07f, sel ? 0.96f : 0.19f, sel ? 0.9f : 0.23f, 0.7f), TextAlignmentOptions.Center, false);
-            int idx = i;
-            Clickable(b.gameObject, () => PickWord(idx));
-        }
+        ImgBg("ingliz");
+        Zone(10, 42, 56, 52, () => Show("talim"));
     }
+
 
     void BuildHarf()
     {
-        GradBg("#E4EEE6", "#FBF3E4");
-        Back(() => Show("talim"), Hex("#12303B"));
-        Label("t", 0, 24, SW, 28, "Harflar", 22, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        Label("cnt", SW - 90, 26, 70, 24, organgan.Count + "/12", 14, Hex("#7FA650"), TextAlignmentOptions.Right, true);
-        var card = Panel("card", 22, 100, SW - 44, 230, Hex("#FFFAF0"));
-        Label("big", 42, 110, 160, 150, harflar[harfIndex].h, 120, harflar[harfIndex].r, TextAlignmentOptions.Left, true);
-        Label("soz", 42, 300, SW - 100, 30, harflar[harfIndex].s, 28, Hex("#12303B"), TextAlignmentOptions.Left, true);
-        MomiqAt(SW - 80, 330, 0.62f);
-        for (int i = 0; i < harflar.Length; i++)
-        {
-            float cw = (SW - 44 - 30) / 4f;
-            float x = 22 + (i % 4) * (cw + 10);
-            float y = 354 + (i / 4) * 76;
-            bool sel = harfIndex == i;
-            bool learned = organgan.Contains(harflar[i].h);
-            var b = Panel("h" + i, x, y, cw, 66, sel ? harflar[i].r : Hex("#FFF8EA"));
-            Label("ht" + i, x, y + 16, cw, 34, harflar[i].h, 30, sel ? Hex("#FFF6E6") : (learned ? Hex("#7FA650") : Hex("#12303B")), TextAlignmentOptions.Center, true);
-            int idx = i;
-            Clickable(b.gameObject, () => PickLetter(idx));
-        }
+        ImgBg("harf");
+        Zone(10, 42, 56, 52, () => Show("talim"));
     }
+
 
     void BuildHub()
     {
@@ -463,29 +395,10 @@ public class MomiqController : MonoBehaviour
 
     void BuildGame()
     {
-        if (gameCo != null) { StopCoroutine(gameCo); gameCo = null; }
-        GradBg("#9AD2DC", "#A2C371");
-        Rect2("grass", 0, SH - 300, SW, 300, Hex("#7FA650"));
-        Back(() => Show("home"), Hex("#12303B"));
-        Label("t", 0, 24, SW, 28, "Olma tut!", 22, Hex("#12303B"), TextAlignmentOptions.Center, true);
-        var sc = Panel("sc", SW - 130, 24, 56, 38, Hex("#FFF8EA"));
-        var scT = Label("scT", SW - 130, 32, 56, 24, gScore.ToString(), 15, Hex("#C8452F"), TextAlignmentOptions.Center, true);
-        var tm = Panel("tm", SW - 68, 24, 46, 38, Hex("#12303B"));
-        var tmT = Label("tmT", SW - 68, 32, 46, 24, gTime + "s", 15, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-
-        MomiqAt(SW / 2f, SH - 30, 0.8f);
-
-        var itemsLayer = Node("items", buildRoot, 0, 100, SW, SH - 100);
-        gameCo = StartCoroutine(RunGame(itemsLayer, scT, tmT));
-
-        if (!gActive)
-        {
-            var ov = Rect2("idle", 0, 0, SW, SH, new Color(0.07f, 0.19f, 0.23f, 0.55f));
-            Label("gt", 0, 320, SW, 40, gOver ? "Zo'r! " + gScore + " ta tutdik" : "Olma tut!", 30, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-            Label("gd", 45, 372, SW - 90, 60, "Tushayotgan olmalarni bosib Momiqqa tutib bering. Har biri 2 tanga.", 14, new Color(1, 0.96f, 0.9f, 0.8f), TextAlignmentOptions.Center, false);
-            BigBtn(gOver ? "Yana o'ynash" : "Boshlash", SW / 2f - 90, 452, 180, 58, Hex("#E9A62B"), Hex("#3B2A1E"), 20, () => StartGame(itemsLayer, scT, tmT));
-        }
+        ImgBg("oyin");
+        Zone(10, 42, 56, 52, () => Show("oyinlar"));
     }
+
 
     void BuildKitchen()
     {
@@ -536,25 +449,10 @@ public class MomiqController : MonoBehaviour
 
     void BuildMemory()
     {
-        BgFlat(Hex("#0E2731"));
-        Back(() => Show("oyinlar"), Hex("#FFF6E6"));
-        Label("t", 0, 24, SW, 28, "Juftini top", 22, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-        Label("m1", SW - 132, 26, 52, 24, mMatched.Count + "/4", 14, Hex("#E9A62B"), TextAlignmentOptions.Center, true);
-        Label("m2", SW - 76, 26, 52, 24, mMoves.ToString(), 14, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-        for (int i = 0; i < mCards.Count; i++)
-        {
-            var c = mCards[i];
-            bool open = mOpen.Contains(c.id) || mMatched.Contains(c.harf);
-            float cw = (SW - 52 - 36) / 4f;
-            float x = 26 + (i % 4) * (cw + 12);
-            float y = 110 + (i / 4) * (104 + 12);
-            var card = Panel("mc" + i, x, y, cw, 104, open ? c.rang : Hex("#173948"));
-            if (open) Label("mt" + i, x, y + 34, cw, 40, c.harf, 26, Hex("#FFF6E6"), TextAlignmentOptions.Center, true);
-            else Clickable(card.gameObject, () => FlipCard(c));
-        }
-        MomiqAt(SW / 2f, SH - 96, 0.72f);
-        Label("hint", 0, SH - 44, SW, 20, "Bir xil harflarni juftlab toping", 13, new Color(1, 0.96f, 0.9f, 0.6f), TextAlignmentOptions.Center, false);
+        ImgBg("xotira");
+        Zone(10, 42, 56, 52, () => Show("oyinlar"));
     }
+
 
     void BuildLevelUp()
     {
@@ -979,36 +877,10 @@ public class MomiqController : MonoBehaviour
 
     void BuildMashq()
     {
-        GradBg("#E4EEE6", "#FFF9EE");
-        if (mq.Count == 0) { StartMashqLesson(fan); return; }
-        string fnom = fan == "tabiiy" ? "Tabiiy fan" : fan == "savod" ? "Savodxonlik" : fan == "ingliz" ? "Ingliz tili" : "Matematika";
-        HeaderBack(fnom, "Mashq " + (mqIdx + 1) + "/" + mq.Count, "matem", Hex("#3A3330"));
-        var q = mq[mqIdx];
-        MomiqAt(SW - 66, 150, 0.5f);
-        Panel("qp", 22, 92, SW - 44, 84, Color.white);
-        Label("qt", 34, 108, SW - 68, 56, q.prompt, 19, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-        if (q.dots > 0)
-        {
-            for (int i = 0; i < q.dots; i++)
-            {
-                float x = 40 + (i % 5) * 62;
-                float y = 200 + (i / 5) * 62;
-                Circle("ap" + i, x, y, 52, q.dotCol);
-            }
-        }
-        int n = q.opts.Length;
-        for (int i = 0; i < n; i++)
-        {
-            float cw = (SW - 44 - 12) / 2f;
-            float x = 22 + (i % 2) * (cw + 12);
-            float y = 340 + (i / 2) * 92;
-            var b = Panel("o" + i, x, y, cw, 80, Hex("#FFF8EA"));
-            Label("ol" + i, x, y + 20, cw, 44, q.opts[i], 34, Hex("#3A3330"), TextAlignmentOptions.Center, true);
-            int idx = i;
-            Clickable(b.gameObject, () => AnswerMashq(idx));
-        }
-        if (mqResult != "") Label("mr", 0, 500, SW, 26, mqResult, 20, Hex("#12A83A"), TextAlignmentOptions.Center, true);
+        ImgBg("mashq");
+        Zone(10, 42, 56, 52, () => Show("matem"));
     }
+
 
     void StartMashqLesson(string f)
     {
@@ -1178,23 +1050,10 @@ public class MomiqController : MonoBehaviour
 
     void BuildTartib()
     {
-        GradBg("#DDEAEC", "#FFF9EE");
-        HeaderBack("Tartiblash", "Kichikdan kattaga", "oyinlar", Hex("#3A3330"));
-        if (tartibSeq.Count == 0) NewTartib();
-        MomiqAt(SW / 2f, 300, 0.7f);
-        Label("hint", 0, 320, SW, 20, "Sonlarni kichikdan kattaga bosing (" + (tartibIdx + 1) + "/" + tartibSeq.Count + ")", 13, new Color(0.23f, 0.2f, 0.19f, 0.6f), TextAlignmentOptions.Center, false);
-        var sorted = new System.Collections.Generic.List<int>(tartibSeq); sorted.Sort();
-        for (int i = 0; i < tartibSeq.Count; i++)
-        {
-            float bw = (SW - 44 - (tartibSeq.Count - 1) * 12) / tartibSeq.Count;
-            float x = 22 + i * (bw + 12);
-            int n = tartibSeq[i];
-            bool done = tartibIdx > sorted.IndexOf(n) && IsPlaced(n, sorted);
-            var b = Panel("tt" + i, x, 380, bw, 96, done ? Hex("#28D62C") : Color.white);
-            Label("ttl" + i, x, 402, bw, 50, n.ToString(), 40, done ? Color.white : Hex("#3A3330"), TextAlignmentOptions.Center, true);
-            Clickable(b.gameObject, () => TapTartib(n, sorted));
-        }
+        ImgBg("tartib");
+        Zone(10, 42, 56, 52, () => Show("oyinlar"));
     }
+
     bool IsPlaced(int n, System.Collections.Generic.List<int> sorted) { return sorted.IndexOf(n) < tartibIdx; }
     void NewTartib()
     {
